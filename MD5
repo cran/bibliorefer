@@ -1,0 +1,15 @@
+3eece4990fa245cbdfcb2155d24da9ca *DESCRIPTION
+bc487cf348f6f99b5113c0ce8ab9c8d7 *NAMESPACE
+9d687c6b90995f323abb759ef434cc7e *R/auxinf_autr.R
+404f48a84ba8947c1550b859c76135e2 *R/crit_quant.R
+a0aa48c015b407ccec0ff5ae891d792f *R/example_database.R
+a9a7121433472fe04f3db0728c7301c1 *R/principal_lister.R
+3f4d8cc81adf5a2d876426049ca665d5 *R/produc_cientific.R
+b6d0e67055ae4c27ea36e90b7815da4e *R/tabel_gera.R
+e77688a1e5ef6e8650cfa462b06075d0 *inst/extdata/example_database.csv
+3913ce5a3055547a927721521b141eac *man/auxinf_autr.Rd
+c00c3b97081c6711a685e4508f073a86 *man/crit_quant.Rd
+7bf2b52d29511dd7d9f6b9bd7461b2ea *man/example_database.Rd
+ee3e8834847bdc80b49747c2c1386d2c *man/principal_lister.Rd
+dc6201a8614d1dc80ad5ec032fa8720c *man/produc_cientific.Rd
+fbfca244998ad15d67a6667aa18ec533 *man/tabel_gera.Rd
