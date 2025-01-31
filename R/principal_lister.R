@@ -68,21 +68,24 @@ principal_lister <- function(input_date,input_tam){
       author_ordena <- base_ded$AU[nume_ordena]
       revist_ordena <- base_ded$SO[nume_ordena]
       art_ordena <- base_ded$TI[nume_ordena]
-      links_ordena <- base_ded$url[nume_ordena]
+      links_ordena <-  base_ded$DI[nume_ordena]
       ano_ordena <- base_ded$PY[nume_ordena]
       abstr_ordena <- base_ded$AB[nume_ordena]
+      pagin_ordena <- base_ded$PP[nume_ordena]
+      volume_ordena <- base_ded$VL[nume_ordena]
 
       # Create table with frequencies in columns
       tabe_principl <- cbind(ano_ordena, num_cit_ord,
                              nu_seque, art_ordena,
                              author_ordena, abstr_ordena,
-                             revist_ordena,links_ordena)
+                             revist_ordena,links_ordena,
+                             pagin_ordena,volume_ordena)
       tabe_principl <- as.data.frame(tabe_principl)
 
       # Change column names
       colnames(tabe_principl) <- c("Year", "Citations","Position",
                                    "Article","Authors","Abstract",
-                                   "Journal", "links")
+                                   "Journal", "links", "Pagina","Volume")
       #Create the reduced table
       quant_tam <- input_tam
       tabe_principre <- tabe_principl[1:quant_tam,]
@@ -211,7 +214,7 @@ principal_lister <- function(input_date,input_tam){
     tabe_principre <- font_princip[[1]]
     colnames(tabe_principre) <- c("year_pub", "citation", "position",
                                   "article","autors","abstract",
-                                  "Revists", "links")
+                                  "Revists", "links","paginas","volumes")
     #Author database
     princ_autor <- font_princip[[2]]$Author
     princ_autor <- as.data.frame(princ_autor)
@@ -262,6 +265,8 @@ principal_lister <- function(input_date,input_tam){
     link_artic <- numeric(n1)
     an_artic <- numeric(n1)
     abstra_artic <- numeric(n1)
+    pagin_artic <- numeric(n1)
+    volum_artic <- numeric(n1)
 
     #Create variable values
     tamanho[1] <- length(lis_autor[[1]])
@@ -287,8 +292,9 @@ principal_lister <- function(input_date,input_tam){
       link_artic[posicaocont[i]] <- tabe_principre$links[i]
       an_artic[posicaocont[i]] <- tabe_principre$year_pub[i]
       abstra_artic[posicaocont[i]] <- tabe_principre$abstract[i]
-
-      }
+      pagin_artic[posicaocont[i]] <- tabe_principre$paginas[i]
+      volum_artic[posicaocont[i]] <- tabe_principre$volumes[i]
+    }
 
     #Create the length of variables
     articl <- numeric(n1)
@@ -299,6 +305,8 @@ principal_lister <- function(input_date,input_tam){
     ano_articl <- numeric(n1)
     abstrac_articl <- numeric(n1)
     num_autorl <- numeric(n2)
+    pagil_articl <- numeric(n1)
+    volul_articl <- numeric(n1)
 
     #Create variable values
     #Create the loop
@@ -320,6 +328,8 @@ principal_lister <- function(input_date,input_tam){
           ano_articl[contador] <- ""
           abstrac_articl[contador] <- ""
           num_autorl[contador] <- ""
+          pagil_articl[contador] <- ""
+          volul_articl[contador] <- ""
 
         }else{
 
@@ -331,6 +341,8 @@ principal_lister <- function(input_date,input_tam){
           ano_articl[contador] <- an_artic[posicaocont[i]]
           abstrac_articl[contador] <- abstra_artic[posicaocont[i]]
           num_autorl[contador] <- tamanho[i]
+          pagil_articl[contador] <- pagin_artic[posicaocont[i]]
+          volul_articl[contador] <- volum_artic[posicaocont[i]]
 
         }
 
@@ -361,13 +373,15 @@ principal_lister <- function(input_date,input_tam){
     princi_listr <- cbind(ano_articl,cla_articl,articl,linkl_articl,
                           abstrac_articl,
                           num_autorl,pautor_separ,
-                          nposi_autor,revistl,nposi_revist)
+                          nposi_autor,revistl,nposi_revist,pagil_articl,
+                          volul_articl)
     princi_listr <- as.data.frame(princi_listr)
     # Name the matrix columns
     colnames(princi_listr) <- c("Year","Position of article","Article",
                                 "Link", "Abstract","Number of authors",
                                 "Authors","Productive position of author",
-                                "Journal","Productive position of journal")
+                                "Journal","Productive position of journal",
+                                "Paginas","Volumes")
 
     # Returns the value of the function
     return(princi_listr)
