@@ -19,7 +19,7 @@ This function receives a dataframe with scientific production data and returns a
 
 #Call the tabel_gera function
 file_db <- system.file("extdata","example_database.csv",package = "bibliorefer")
-separator <- ","
+separator <- ";"
 input_date <- example_database(file_db, separator)
 scientific_inf <- tabel_gera(input_date)
 scientific_inf

@@ -18,14 +18,14 @@
 #' #Call the example_database function
 #'
 #' file_db <- system.file("extdata","example_database.csv", package = "bibliorefer")
-#' separator <- ","
+#' separator <- ";"
 #' date_sreference <- example_database(file_db, separator)
 #' date_sreference
 #'
 example_database <- function(path_date, separator){
-
+  
   separ <- separator
   date_package <- read.csv2(path_date, sep = separ)
-
+  
   return(date_package)
 }

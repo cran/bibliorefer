@@ -22,7 +22,7 @@ The example_database function reads a csv file available on the computer system 
 #Call the example_database function
 
 file_db <- system.file("extdata","example_database.csv", package = "bibliorefer")
-separator <- ","
+separator <- ";"
 date_sreference <- example_database(file_db, separator)
 date_sreference
 

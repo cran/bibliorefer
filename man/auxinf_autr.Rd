@@ -20,7 +20,7 @@ This function generates quantitative information about the partnerships of resea
 \examples{
 
 file_db <- system.file("extdata","example_database.csv",package = "bibliorefer")
-separator <- ","
+separator <- ";"
 input_date <- example_database(file_db, separator)
 input_tam <- 100
 extra_inf <- auxinf_autr(input_date,input_tam)

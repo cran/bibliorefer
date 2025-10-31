@@ -20,7 +20,7 @@
 #' #Call the principal_lister function
 #' input_tam <- 100
 #' file_db <- system.file("extdata","example_database.csv", package = "bibliorefer")
-#' separator <- ","
+#' separator <- ";"
 #' input_date <- example_database(file_db, separator)
 #' principal_refer <- principal_lister(input_date,input_tam)
 #'
@@ -31,41 +31,41 @@
 #'
 
 crit_quant <- function(input_ent){
-
+  
   # Data entry parameters
   tabel_ent <- input_ent
   nume_classes <- 10
-
+  
   # Function of quantitative criteria of the Author
   tabefai_autor <- function(tabel_ent,nume_classes){
-
+    
     # Data entry parameters
     tabel_entautor <- tabel_ent[[1]]
     mposautor <- tabel_ent[[2]]$mposautor
-
+    
     #Calculate the length of class extremes
     extrem <- nume_classes+1
     produt_autor <- tabel_entautor$`Productive position of author`
     produt_autor <- as.numeric(produt_autor)
     produt_autor <- cbind(produt_autor)
-
+    
     # Calculate class length
     maxim_autor <- mposautor
     minim_autor <- min(produt_autor)
     tam_autor <- (maxim_autor-minim_autor)/nume_classes
-
+    
     # Create frequency distribution classes
     autor_classes <- seq(minim_autor, maxim_autor,
                          length.out = extrem)
     autor_classes <- round(autor_classes)
     autor_classes <- cbind(autor_classes)
-
+    
     # Create production range variables
     tama <- 10
     parte1 <- numeric(tama)
     parte2 <- numeric(tama)
     cami_entautor <- numeric(tama)
-
+    
     # Start variables
     parte1[1] <- autor_classes[1]
     parte2[2] <- autor_classes[2]
@@ -73,7 +73,7 @@ crit_quant <- function(input_ent){
                               sep = " - ")
     # Create the loop
     for(i in 3:tama){
-
+      
       parte1[i-1] <- autor_classes[i-1] + 1
       parte2[i] <- autor_classes[i]
       cami_entautor[i-1] <- paste(parte1[i-1], parte2[i],
@@ -83,25 +83,25 @@ crit_quant <- function(input_ent){
     parte2[tama+1] <- autor_classes[tama+1]
     cami_entautor[tama] <- paste(parte1[tama], parte2[tama+1],
                                  sep = " - ")
-
+    
     # Create the matrix with productivity ranges
     cami_entautor <- cbind(cami_entautor)
-
+    
     # Creates the frequency distribution of values
     fabs_autor <- table(cut(produt_autor,
                             include.lowest = T, breaks=autor_classes,
                             right=F, labels = cami_entautor))
     fabs_autor <- as.data.frame(fabs_autor)
     fabsac_autor <- cumsum(fabs_autor$Freq)
-
+    
     #Calculate relative frequency
     tota_autor <- sum(fabs_autor$Freq)
     fr_autor <- 100*fabs_autor$Freq/tota_autor
     fr_autor <- round(fr_autor,digits = 3)
-
+    
     #Calculates the accumulated frequency
     fac_autor <- cumsum(fr_autor)
-
+    
     #Calculates the table with frequency distribution
     faix_autor <- c("One","Two","Three","Four","Five",
                     "Six","Seven","Eight","Nine","Ten")
@@ -116,39 +116,39 @@ crit_quant <- function(input_ent){
                                "Accumulated percentage")
     # Return results
     return(difre_autor)
-
+    
   }
-
+  
   # Function of the quantitative criteria of the magazine
   tabefai_revist <- function(tabel_ent,nume_classes){
-
+    
     # Data entry parameters
     tabel_entrevist <- tabel_ent[[1]]
     mposrevist <- tabel_ent[[2]]$mposrevist
-
+    
     #Calculate the length of class extremes
     extrem <- nume_classes+1
     produt_revist <- tabel_entrevist$`Productive position of journal`
     produt_revist <- as.numeric(produt_revist)
     tabee_revist <- na.omit(produt_revist)
-
+    
     # Calculate class length
     maxim_revist <- max(mposrevist)
     minim_revist <- min(tabee_revist)
     tam_revist <- (maxim_revist-minim_revist)/nume_classes
-
+    
     # Create frequency distribution classes
     revist_classes <- seq(minim_revist, maxim_revist,
                           length.out = extrem)
     revist_classes <- round(revist_classes)
     revist_classes <- cbind(revist_classes)
-
+    
     # Create production range variables
     tama <- 10
     parte1 <- numeric(tama)
     parte2 <- numeric(tama)
     cami_erevist <- numeric(tama)
-
+    
     # Creates the frequency distribution of values
     parte1[1] <- revist_classes[1]
     parte2[2] <- revist_classes[2]
@@ -156,7 +156,7 @@ crit_quant <- function(input_ent){
                              sep = " - ")
     # Create the loop
     for(i in 3:tama){
-
+      
       parte1[i-1] <- revist_classes[i-1] + 1
       parte2[i] <- revist_classes[i]
       cami_erevist[i-1] <- paste(parte1[i-1], parte2[i],
@@ -166,10 +166,10 @@ crit_quant <- function(input_ent){
     parte2[tama+1] <- revist_classes[tama+1]
     cami_erevist[tama] <- paste(parte1[tama], parte2[tama+1],
                                 sep = " - ")
-
+    
     # Create the matrix with productivity ranges
     cami_erevist <- cbind(cami_erevist)
-
+    
     # Creates the frequency distribution of values
     fabs_revist <- table(cut(produt_revist,
                              include.lowest = T,
@@ -177,15 +177,15 @@ crit_quant <- function(input_ent){
                              right=F, labels = cami_erevist))
     fabs_revist <- as.data.frame(fabs_revist)
     fabsac_revist <- cumsum(fabs_revist$Freq)
-
+    
     #Calculate relative frequency
     tota_revist <- sum(fabs_revist$Freq)
     fr_revist <- 100*fabs_revist$Freq/tota_revist
     fr_revist <- round(fr_revist,digits = 2)
-
+    
     #Calculates the accumulated frequency
     fac_revist <- cumsum(fr_revist)
-
+    
     #Calculates the table with frequency distribution
     faix_revist <- c("One","Two","Three","Four","Five",
                      "Six","Seven","Eight","Nine","Ten")
@@ -203,17 +203,17 @@ crit_quant <- function(input_ent){
     # Return results
     return(difre_revist)
   }
-
+  
   # Call functions
   difreq_autor <- tabefai_autor(tabel_ent,nume_classes)
   difreq_revistr <- tabefai_revist(tabel_ent,nume_classes)
-
+  
   # Create the list of results
   difreq_results <- list()
   difreq_results <- list(difreq_autor,difreq_revistr)
   names(difreq_results) <- c("Critquant_author",
                              "Critquant_journal")
-
+  
   # Return results
   return(difreq_results)
 }

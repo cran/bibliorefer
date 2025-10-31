@@ -20,7 +20,7 @@ This function quantitatively validates the list of main scientific references ob
 #Call the principal_lister function
 input_tam <- 100
 file_db <- system.file("extdata","example_database.csv", package = "bibliorefer")
-separator <- ","
+separator <- ";"
 input_date <- example_database(file_db, separator)
 principal_refer <- principal_lister(input_date,input_tam)
 

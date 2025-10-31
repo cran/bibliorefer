@@ -19,7 +19,7 @@ This function shows the evolution of scientific production. The function receive
 
 #Call the produc_cientific function
 file_db <- system.file("extdata","example_database.csv", package = "bibliorefer")
-separator <- ","
+separator <- ";"
 input_date <- example_database(file_db, separator)
 prod_ct <- produc_cientific(input_date)
 prod_ct

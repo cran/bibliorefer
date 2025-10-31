@@ -20,7 +20,7 @@
 #' #Call the principal_lister function
 #' input_tam <- 100
 #' file_db <- system.file("extdata","example_database.csv", package = "bibliorefer")
-#' separator <- ","
+#' separator <- ";"
 #' input_date <- example_database(file_db, separator)
 #' principal_refer <- principal_lister(input_date,input_tam)
 #'
@@ -30,37 +30,37 @@
 #'
 
 ajust_pagin <- function(input_ent){
-
+  
   # Call the main list function
   listaprin <- input_ent
-
+  
   # Modify the format and create the last column of volumes
   tabela_listprinc <- listaprin[[1]]
   tabela_listprinc <- as.data.frame(tabela_listprinc)
   volumes <- tabela_listprinc$Volumes
-
+  
   # Modify the variable name
   tabela_listprin <- tabela_listprinc
-
+  
   # NA check for page column
   linhas <- is.na(tabela_listprin$Paginas)
   padrao <- "TRUE"
   linhas <- grep(padrao,linhas)
   tabela_listprin$Paginas[linhas] <- ""
-
+  
   # Check lines with page separation pattern
   padrao_scopus <- " \u2013 "
   linhas_scopus <- grep(padrao_scopus,tabela_listprin$Paginas)
   nscopus <- length(linhas_scopus)
-
+  
   # Check lines with page separation pattern
   padrao_wos <- "\u002D"
   linhas_wos <- grep(padrao_wos,tabela_listprin$Paginas)
   nwos <- length(linhas_wos)
-
+  
   # Standardize the page separator
   if(nscopus != 0 && nwos == 0){
-
+    
     # Initial adjustment to page spacing
     pagin2 <- numeric()
     n <- length(tabela_listprin$Paginas)
@@ -69,31 +69,31 @@ ajust_pagin <- function(input_ent){
     traco1 <- "\u002D"
     traco2 <- "\u002D"
     tracom2 <- paste0(traco1,traco2)
-
+    
     # Create the loop
     for(i in 1:n){
       pagin2[i] <- paste0(pagi2[[i]][1],tracom2,pagi2[[i]][2])
     }
-
+    
     # Checking the new NA standard for pages
     NA1 <- "NA"
     NA2 <- "NA"
     padraoNA <- paste0(NA1,tracom2,NA2)
     linhasNA <- grep(padraoNA,pagin2)
-
+    
     pagin2[linhasNA] <- ""
     pagin2 <- cbind(pagin2)
     pagin2 <- as.data.frame(pagin2)
     colnames(pagin2) <- "Paginas"
-
+    
     # Organize the page column
     colunas <- c(11,12)
     tabela_listprin <- tabela_listprin[,-colunas]
     tabela_listprin <- cbind(tabela_listprin,pagin2,volumes)
     tabela_listprin <- as.data.frame(tabela_listprin)
-
+    
   }else if (nscopus == 0 && nwos != 0){
-
+    
     pagin2 <- numeric()
     n <- length(tabela_listprin$Paginas)
     hifen <- "\u002D"
@@ -101,31 +101,31 @@ ajust_pagin <- function(input_ent){
     traco1 <- "\u002D"
     traco2 <- "\u002D"
     tracom2 <- paste0(traco1,traco2)
-
+    
     # Create the loop
     for(i in 1:n){
       pagin2[i] <- paste0(pagi2[[i]][1],tracom2,pagi2[[i]][2])
     }
-
+    
     # Checking the new NA standard for pages
     NA1 <- "NA"
     NA2 <- "NA"
     padraoNA <- paste0(NA1,tracom2,NA2)
     linhasNA <- grep(padraoNA,pagin2)
-
+    
     pagin2[linhasNA] <- ""
     pagin2 <- cbind(pagin2)
     pagin2 <- as.data.frame(pagin2)
     colnames(pagin2) <- "Paginas"
-
+    
     # Organize the page column
     colunas <- c(11,12)
     tabela_listprin <- tabela_listprin[,-colunas]
     tabela_listprin <- cbind(tabela_listprin,pagin2,volumes)
     tabela_listprin <- as.data.frame(tabela_listprin)
-
+    
   } else {
-
+    
     # Initial adjustment to page spacing
     pagin_scopus <- numeric()
     meia_risca <- " \u2013 "
@@ -133,50 +133,50 @@ ajust_pagin <- function(input_ent){
     traco1 <- "\u002D"
     traco2 <- "\u002D"
     tracom2 <- paste0(traco1,traco2)
-
+    
     # Create the loop
     for(i in 1:nscopus){
       pagin_scopus[i] <- paste0(pagin_scopus[[i]][1],tracom2,pagin_scopus[[i]][2])
     }
     pagin_scopus <- unlist(pagin_scopus)
-
+    
     pagin_wos <- numeric()
     hifen <- "\u002D"
     pagin_wos <- strsplit(tabela_listprin$Paginas[linhas_wos],split = hifen)
     traco1 <- "\u002D"
     traco2 <- "\u002D"
     tracom2 <- paste0(traco1,traco2)
-
+    
     # Create the loop
     for(i in 1:nwos){
       pagin_wos[i] <- paste0(pagin_wos[[i]][1],tracom2,pagin_wos[[i]][2])
     }
     pagin_wos <- unlist(pagin_wos)
-
+    
     # Organization of scopus values in the table
     for(i in 1:nscopus){
       tabela_listprin$Paginas[linhas_scopus[i]] <- pagin_scopus[i]
     }
-
+    
     # Organization of scopus values in the table
     for(i in 1:nwos){
       tabela_listprin$Paginas[linhas_wos[i]] <- pagin_wos[i]
     }
-
+    
     # Create the variable
     pagin2 <- cbind(tabela_listprin$Paginas)
     pagin2 <- as.data.frame(pagin2)
     colnames(pagin2) <- "Paginas"
-
+    
     # Organize the page column
     colunas <- c(11,12)
     tabela_listprin <- tabela_listprin[,-colunas]
     tabela_listprin <- cbind(tabela_listprin,pagin2,volumes)
     tabela_listprin <- as.data.frame(tabela_listprin)
-
+    
   }
-
+  
   # Return the result
   return(tabela_listprin)
-
+  
 }

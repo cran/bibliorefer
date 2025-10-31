@@ -17,7 +17,7 @@
 #' # Example 1
 #' input_tam <- 80
 #' file_db <- system.file("extdata","example_database.csv", package = "bibliorefer")
-#' separator <- ","
+#' separator <- ";"
 #' input_date <- example_database(file_db, separator)
 #' principal_refer <- principal_lister(input_date,input_tam)
 #' principal_refer[[1]]
@@ -25,7 +25,7 @@
 #' # Example 2
 #' input_tam <- 40
 #' file_db <- system.file("extdata","example_database.csv", package = "bibliorefer")
-#' separator <- ","
+#' separator <- ";"
 #' input_date <- example_database(file_db, separator)
 #' principal_refer <- principal_lister(input_date,input_tam)
 #' principal_refer[[1]]
@@ -33,37 +33,37 @@
 
 # Function of the main scientific reference list
 principal_lister <- function(input_date,input_tam){
-
+  
   # Enter the database
   input_date <- input_date
   input_tam <- input_tam
-
+  
   # Function of ordered information
   font_principal <- function(input_date,input_tam){
-
+    
     # Enter the database
     input_article <- input_date
     input_autor <- input_date
     input_revist <- input_date
-
+    
     # Article citation function
     tabel_principal <- function(input_article, input_tam){
-
+      
       # Enter the article citation database
       base_ded <- input_article
       # Calculate the size of the database
       tam_art <- length(base_ded$AU)
-
+      
       #Create the sequence of numbers
       minim_cit <- 1
       maxim_cit <- tam_art
       incm_cit <- 1
       nu_seque <- seq(minim_cit, maxim_cit, incm_cit)
-
+      
       # Sort the number of citations and positions
       num_cit_ord <- sort(base_ded$TC, decreasing=T)
       nume_ordena <- order(base_ded$TC, decreasing=T)
-
+      
       # Order the problem variables
       author_ordena <- base_ded$AU[nume_ordena]
       revist_ordena <- base_ded$SO[nume_ordena]
@@ -73,7 +73,7 @@ principal_lister <- function(input_date,input_tam){
       abstr_ordena <- base_ded$AB[nume_ordena]
       pagin_ordena <- base_ded$PP[nume_ordena]
       volume_ordena <- base_ded$VL[nume_ordena]
-
+      
       # Create table with frequencies in columns
       tabe_principl <- cbind(ano_ordena, num_cit_ord,
                              nu_seque, art_ordena,
@@ -81,7 +81,7 @@ principal_lister <- function(input_date,input_tam){
                              revist_ordena,links_ordena,
                              pagin_ordena,volume_ordena)
       tabe_principl <- as.data.frame(tabe_principl)
-
+      
       # Change column names
       colnames(tabe_principl) <- c("Year", "Citations","Position",
                                    "Article","Authors","Abstract",
@@ -89,49 +89,49 @@ principal_lister <- function(input_date,input_tam){
       #Create the reduced table
       quant_tam <- input_tam
       tabe_principre <- tabe_principl[1:quant_tam,]
-
+      
       # Show results
       return(tabe_principre)
     }
-
+    
     # Function of productivity of the authors
     tabel_authors <- function(input_autor){
-
+      
       # Create the authors database
       base_ded <- input_autor
       base_autor <- cbind(base_ded$AU)
-
+      
       #Separate the authors
       autor_separ <- strsplit(base_autor, split = ";")
       autor_separ <- cbind(unlist(autor_separ))
-
+      
       # Calculate the absolute frequency of authors
       fabs_autor <- table(autor_separ)
       fabs_autor <- sort(fabs_autor,decreasing = T)
-
+      
       # Calculate the relative frequency
       total_autor <- sum(fabs_autor)
       fr_autor <- 100*fabs_autor/total_autor
       fr_autor <- round(fr_autor,digits = 2)
-
+      
       #Calculate accumulated frequency
       fac_autor <- cumsum(fr_autor)
       fac_autor <- round(fac_autor,digits = 2)
-
+      
       # Create table with frequencies in columns
       tabefreq_autor <- cbind(fabs_autor, fr_autor, fac_autor)
       tabefreq_autor <- as.data.frame(tabefreq_autor)
-
+      
       # Create the sequence of positions
       nom_autor <- row.names(fabs_autor)
       tam_autor <- length(nom_autor)
-
+      
       # Create the sequence of positions
       minim_autor <- 1
       maxim_autor <- tam_autor
       incm_autor <- 1
       num_autor <- seq(minim_autor, maxim_autor, incm_autor)
-
+      
       # Create the table with the variables
       tabel_autor <- cbind(num_autor, nom_autor,
                            tabefreq_autor$fabs_autor,
@@ -145,38 +145,38 @@ principal_lister <- function(input_date,input_tam){
       # Show results
       return(tabel_autor)
     }
-
+    
     # Function of magazine productivity
     tabel_revists <- function(input_revist){
-
+      
       # Create the reference database
       base_ded <- input_revist
       base_revist <- base_ded$SO
-
+      
       # Calculate the absolute frequency of publications
       fabs_revist <- table(base_revist)
       fabs_revist <- sort(fabs_revist, decreasing = T)
-
+      
       # Calculate the relative frequency
       total_revist <- sum(fabs_revist)
       fr_revist <- 100*fabs_revist/total_revist
       fr_revist <- round(fr_revist,digits = 2)
-
+      
       #Calculate accumulated frequency
       fac_revist <- cumsum(fr_revist)
       fac_revist <- round(fac_revist, digits = 2)
-
+      
       #Create a table with frequencies
       tabefreq_revist <- cbind(fabs_revist,fr_revist, fac_revist)
       tabefreq_revist <- as.data.frame(tabefreq_revist)
-
+      
       # Create the sequence of positions
       tam_revist <- length(fabs_revist)
       mini_revist <- 1
       maxi_revist <- tam_revist
       inc_revist <- 1
       num_revist <- seq(mini_revist, maxi_revist, inc_revist)
-
+      
       # Create the table with the variables
       nom_revist <- row.names(fabs_revist)
       tabel_revist <- cbind(num_revist, nom_revist,
@@ -191,12 +191,12 @@ principal_lister <- function(input_date,input_tam){
       # Show results
       return(tabel_revist)
     }
-
+    
     # Call internal functions
     tabe_principre <- tabel_principal(input_article, input_tam)
     tabe_author <- tabel_authors(input_autor)
     tabe_revist <- tabel_revists(input_revist)
-
+    
     # Create list with results
     font_princip <- list()
     font_princip <- list(tabe_principre,tabe_author,
@@ -206,10 +206,10 @@ principal_lister <- function(input_date,input_tam){
     # Show results
     return(font_princip)
   }
-
+  
   #Function cross-information of scientific production
   cross_infrefer <- function(font_princip){
-
+    
     #Article database
     tabe_principre <- font_princip[[1]]
     colnames(tabe_principre) <- c("year_pub", "citation", "position",
@@ -219,27 +219,27 @@ principal_lister <- function(input_date,input_tam){
     princ_autor <- font_princip[[2]]$Author
     princ_autor <- as.data.frame(princ_autor)
     colnames(princ_autor) <- c("autors")
-
+    
     #Magazine database
     princ_revist <- font_princip[[3]]$Journal
     princ_revist <- as.data.frame(princ_revist)
     colnames(princ_revist) <- c("revist")
-
+    
     #List of separate authors
     lis_autor <- strsplit(tabe_principre$autors, split = ";")
     pautor_separ <- cbind(unlist(lis_autor))
-
+    
     #Length of databases
     m <- length(princ_autor$autors)
     n1 <- length(tabe_principre$position)
     n2 <- length(pautor_separ)
-
+    
     #Position of magazines in relation to articles
     nposi_rev <- numeric(n1)
-
+    
     #Create the loop
     for(i in 1:n1){
-
+      
       j <- 0
       repeat {
         j <- j + 1
@@ -248,13 +248,13 @@ principal_lister <- function(input_date,input_tam){
       }
       nposi_rev[i] <- j
     }
-
+    
     #Create sequence of positions
     minimo <- 1
     maximo <- n2
     incremento <- 1
     posicao <- seq(minimo,maximo,incremento)
-
+    
     #Create variable size
     tamanho <- numeric(n1)
     posicaocontc<-numeric(n1)
@@ -267,25 +267,25 @@ principal_lister <- function(input_date,input_tam){
     abstra_artic <- numeric(n1)
     pagin_artic <- numeric(n1)
     volum_artic <- numeric(n1)
-
+    
     #Create variable values
     tamanho[1] <- length(lis_autor[[1]])
     posicaocontc[1] <- 0
     posicaocont[1] <- tamanho[1]
-
+    
     #Create the loop for length and position counter
     for(i in 2:n1){
-
+      
       tamanho[i] <- length(lis_autor[[i]])
       posicaocontc[i] <- posicaocontc[i-1] + tamanho[i-1]
       posicaocont[i] <- posicaocont[i-1] + tamanho[i]
-
+      
     }
-
+    
     #Create variable values
     #Create the loop for variable values
     for(i in 1:n1){
-
+      
       artic_posicao[posicaocont[i]] <- tabe_principre$article[i]
       revist_posicao[posicaocont[i]] <- tabe_principre$Revists[i]
       claf_artic[posicaocont[i]] <- tabe_principre$position[i]
@@ -295,7 +295,7 @@ principal_lister <- function(input_date,input_tam){
       pagin_artic[posicaocont[i]] <- tabe_principre$paginas[i]
       volum_artic[posicaocont[i]] <- tabe_principre$volumes[i]
     }
-
+    
     #Create the length of variables
     articl <- numeric(n1)
     revistl <- numeric(n1)
@@ -307,19 +307,19 @@ principal_lister <- function(input_date,input_tam){
     num_autorl <- numeric(n2)
     pagil_articl <- numeric(n1)
     volul_articl <- numeric(n1)
-
+    
     #Create variable values
     #Create the loop
     for(i in 1:n1){
-
+      
       j <- 0
-
+      
       repeat {
         j <- j + 1
         contador <- j + posicaocontc[i]
-
+        
         if(posicao[contador] != posicaocont[i]){
-
+          
           articl[contador] <- ""
           revistl[contador] <- ""
           nposi_revist[contador] <- ""
@@ -330,9 +330,9 @@ principal_lister <- function(input_date,input_tam){
           num_autorl[contador] <- ""
           pagil_articl[contador] <- ""
           volul_articl[contador] <- ""
-
+          
         }else{
-
+          
           articl[contador] <- artic_posicao[posicaocont[i]]
           revistl[contador] <- revist_posicao[posicaocont[i]]
           nposi_revist[contador] <- nposi_rev[i]
@@ -343,32 +343,32 @@ principal_lister <- function(input_date,input_tam){
           num_autorl[contador] <- tamanho[i]
           pagil_articl[contador] <- pagin_artic[posicaocont[i]]
           volul_articl[contador] <- volum_artic[posicaocont[i]]
-
+          
         }
-
+        
         if (posicao[contador] == posicaocont[i])
           break()
       }
-
+      
     }
-
+    
     # Create authors variable length
     nposi_autor <- numeric(n2)
-
+    
     # Position of authors in relation to articles
     #Create the loop
     for(i in 1:n2){
       j <- 0
-
+      
       repeat {
         j <- j + 1
-
+        
         if(pautor_separ[i] == princ_autor$autors[j])
           break
       }
       nposi_autor[i] <- j
     }
-
+    
     # Create the matrix with the variables
     princi_listr <- cbind(ano_articl,cla_articl,articl,linkl_articl,
                           abstrac_articl,
@@ -382,36 +382,36 @@ principal_lister <- function(input_date,input_tam){
                                 "Authors","Productive position of author",
                                 "Journal","Productive position of journal",
                                 "Paginas","Volumes")
-
+    
     # Returns the value of the function
     return(princi_listr)
-
+    
   }
-
+  
   # Call the source and main list functions
   font_princip <- font_principal(input_date,input_tam)
   cross_lister <- cross_infrefer(font_princip)
-
+  
   #Author database
   sequenc_autor <- font_princip[[2]]$Position
   sequenc_autor <- cbind(as.numeric(sequenc_autor))
   mposautor <- max(sequenc_autor)
-
+  
   #Journal database
   sequenc_revist <- font_princip[[3]]$Position
   sequenc_revist <- cbind(as.numeric(sequenc_revist))
   mposrevist <- max(sequenc_revist)
-
+  
   #Final productive position of authors and journals
   maxi_positions <- cbind(mposautor, mposrevist)
   maxi_positions <- as.data.frame(maxi_positions)
-
+  
   #Create the list with the results
   princip_lister <- list()
   princip_lister <- list(cross_lister, maxi_positions)
   names(princip_lister) <- c("princ_lister","maxi_positions")
-
+  
   # Return the result
   return(princip_lister)
-
+  
 }

@@ -23,7 +23,7 @@ This function generates a list, with a size defined by the user, with the main s
 # Example 1
 input_tam <- 80
 file_db <- system.file("extdata","example_database.csv", package = "bibliorefer")
-separator <- ","
+separator <- ";"
 input_date <- example_database(file_db, separator)
 principal_refer <- principal_lister(input_date,input_tam)
 principal_refer[[1]]
@@ -31,7 +31,7 @@ principal_refer[[1]]
 # Example 2
 input_tam <- 40
 file_db <- system.file("extdata","example_database.csv", package = "bibliorefer")
-separator <- ","
+separator <- ";"
 input_date <- example_database(file_db, separator)
 principal_refer <- principal_lister(input_date,input_tam)
 principal_refer[[1]]
