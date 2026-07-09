@@ -1,7 +1,7 @@
 Package: bibliorefer
 Type: Package
 Title: Generator of Main Scientific References
-Version: 0.1.3
+Version: 0.1.4
 Authors@R: person("Márcio","Eustáquio", email = "marcioeustaquio@id.uff.br", role = c("aut", "cre"))
 Maintainer: Márcio Eustáquio <marcioeustaquio@id.uff.br>
 Description: Generates a list, with a size defined by the user, containing the main scientific references and the frequency distribution of authors and journals in the list obtained.
@@ -11,11 +11,11 @@ Description: Generates a list, with a size defined by the user, containing the m
     Caibo Zhou, Wenyan Song. (2021) <doi:10.1016/j.jclepro.2021.126943>.
 License: GPL-3
 Encoding: UTF-8
-RoxygenNote: 7.3.2
 Imports: stats
 Depends: R (>= 4.4.0)
+Config/roxygen2/version: 8.0.0
 NeedsCompilation: no
-Packaged: 2026-02-06 18:45:25 UTC; marciomaria
+Packaged: 2026-07-09 14:35:04 UTC; marciomaria
 Author: Márcio Eustáquio [aut, cre]
 Repository: CRAN
-Date/Publication: 2026-02-07 06:11:07 UTC
+Date/Publication: 2026-07-09 17:10:08 UTC
